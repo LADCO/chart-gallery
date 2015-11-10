@@ -1,0 +1,105 @@
+---
+title: "Leaflet: PAH concentration map w/ gradient legend"
+author: "MPCA"
+date: "November 9, 2015"
+output: 
+  html_document:
+    highlight: tango
+    keep_md: no
+    toc: no
+---
+
+
+## Load data
+
+```{r message=F}
+
+library(rCharts)
+library(dplyr)
+library(readr)
+
+pah_data <- read_csv('"Year","Conc","MPCA_SiteID","long","lat","Site_Name"
+2013,5.65,980,-93.25155,44.9503,"Bloomington Ave & Midtown Greenway"
+2013,6.54,981,-93.268946,44.950537,"5th Ave S and Midtown Greenway"
+2013,7.58,993,-93.274931,44.966352,"E 17th St between Stevens & 2nd Ave"
+2013,8.31,990,-93.2627,44.9622,"Chicago Ave south of Franklin Ave, Peavey Park"
+2013,8.75,987,-93.2538,44.9541,"E 25th between 12th & 13th Aves"
+2013,8.93,991,-93.261434,44.964992,"E 18th St between Park and Elliot Aves"
+2013,9.4,989,-93.249425,44.960693,"East Phillips Park"
+2013,9.61,986,-93.244683,44.957046,"Little Earth community garden"
+2013,10,983,-93.26587,44.95253,"Park Ave South between 26th and 28th street"
+2013,10.4,963,-93.2583,44.9535,"Anderson School"
+2013,11.5,962,-93.254766,44.965252,"Near Roadway Site"
+2013,12.1,988,-93.2686,44.9592,"5th Ave S between 24th & 25th Sts"
+2013,12.2,985,-93.2471,44.9567,"Little Earth parking lot off Cedar Ave"
+2013,15.1,992,-93.2478,44.9657,"Peace Garden Site"
+2013,20.1,982,-93.244816,44.951576,"Midtown Greenway & E 28th St"')
+
+pah_data$Units <- "UG/M3"
+pah_data$Season <- "Summer"
+pah_data$Analyte <- "Naphthalene"
+
+```
+
+## Define the legend
+
+```{r message=F}
+legend_colors <- c("#081D58", "#0088EE", "#44BBCC", "#99DDBB", "#d9f0a3", "#f7fcb9")[1:5]
+
+legend_breaks <- quantile(pah_data$Conc, c(0.05,0.25,0.5,0.8,1))
+
+legend_scale <- quantile(c(pah_data$Conc,.985*min(pah_data$Conc), 1.015*max(pah_data$Conc)), na.rm=T, seq(from=0, to=1, 1/30))
+
+labels_list <- as.vector(if(length(unique(pah_data$Conc)) < 2) c(signif(pah_data$Conc, 2)) 
+                         else c(rev(signif(legend_breaks, 2))))
+
+``` 
+
+## Prep for Leaflet
+
+```{r message=F}
+# Convert data table to list format for Leaflet
+data_list <- lapply(1:nrow(pah_data), function(x) pah_data[x, ])
+
+# Assign each sites fillColor based on concentration
+data_list <- lapply(data_list, function(station){within(station, {
+        fillColor = cut(Conc, breaks = legend_scale, right=F, labels = colorRampPalette(rev(legend_colors[1:5]))(30), include.lowest=T)}) })
+
+pah_data$Conc = round(pah_data$Conc, 1)
+```
+
+## Build the leaflet map
+```{r message=F}    
+# Create new map
+map <- Leaflet$new()
+
+# Set basemap
+map$tileLayer(provider = "Stamen.TonerLite")
+
+# Pass data list to map in GeoJSON format,
+# define popup message using 'pointToLayer'
+map$geoJson(toGeoJSON(data_list, lat = "lat", lon = "long" ),
+                  pointToLayer =  "#! function(feature, latlng){return L.circleMarker(latlng, { radius: 11, 
+                         fillColor: feature.properties.fillColor || 'grey',
+                         color: '#000', 
+                         weight: 1, 
+                         fillOpacity: 0.87, 
+                         title: feature.properties.MPCA_Site_ID }) } !#")
+      
+map$legend(position = 'topleft', 
+           colors = c(legend_colors, "lightgrey"),
+           labels = c(labels_list, "Not Detected"))
+      
+map$setView(c(mean(range(pah_data$lat)), mean(range(pah_data$long))), zoom = 13)
+      
+map
+```  
+
+<br>
+
+View the interactive version at [**https://mpca-pahs.shinyapps.io/Annual_PAHS_test**](https://mpca-pahs.shinyapps.io/Annual_PAHS_test).
+
+### Minneapolis PAH Concentrations (ug/m3)
+![leaf_concentration_legend](https://cloud.githubusercontent.com/assets/6283030/11069881/18463d7a-879e-11e5-90f2-aaa815bb918d.PNG)
+
+
