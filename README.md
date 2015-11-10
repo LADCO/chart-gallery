@@ -16,7 +16,7 @@ PAH concentrations w/ color legend (Leaflet)
 ___  
 
 Wordcloud of PAHs weighted by detection frequency
-[![wordcloud](https://cloud.githubusercontent.com/assets/6283030/11045997/49742230-86f0-11e5-8d00-51c8dc9fcc09.png "Click to view R script")](https://github.com/LADCO/chart-gallery/blob/master/R/wordcloud.Rmd)  
+[![wordcloud](https://cloud.githubusercontent.com/assets/6283030/11045997/49742230-86f0-11e5-8d00-51c8dc9fcc09.png "Click to view R script")](https://github.com/LADCO/chart-gallery/blob/master/R/visuals/wordcloud.Rmd)  
 
 
 ## Boxplots
