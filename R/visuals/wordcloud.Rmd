@@ -1,0 +1,48 @@
+---
+title: 'PAHs in Minnesota Air: Rural and Urban Environments'
+author: "Kristie"
+date: "October 1, 2015"
+output: html_document
+---
+
+## Wordcloud of PAHs weighted by detection frequency
+```{r}
+library(wordcloud)
+library(RColorBrewer)
+library(readr)
+
+# Set margins to zero
+par(mar = rep(0, 4))
+
+# Define color pallette
+pal <- brewer.pal(8, "Dark2")
+
+# Create data table
+pahs <- read_csv('"Analyte","freq"
+"5-Methylchrysene",0.0403
+"7H-Dibenzo[c,g]carbazole",0.0014
+"Anthanthrene",0.0488
+"Benz[a]anthracene",0.1111
+"Benzo[a]pyrene",0.1591
+"Benzo[b]fluoranthene",0.1644
+"Benzo[c]fluorene",0.4588
+"Benzo[g,h,i]perylene",0.052
+"Benzo[j]fluoranthene",0.0843
+"Benzo[k]fluoranthene",0.065
+"Chrysene",0.1057
+"Cyclopenta[c,d]pyrene",0.0836
+"Dibenz[a,h]acridine",7e-04
+"Dibenz[a,h]anthracene",0.2357
+"Dibenzo[a,e]fluoranthene",0.0693
+"Dibenzo[a,e]pyrene",0.0529
+"Dibenzo[a,h]pyrene",0.0249
+"Dibenzo[a,i]pyrene",0.0247
+"Fluoranthene",0.1601
+"Indeno[1,2,3-cd]pyrene",0.057')
+
+
+wordcloud(pahs$Analyte, pahs$freq, scale=c(3, 0.4), random.order=F, random.color=T, rot.per=0.25, colors=pal)
+
+```
+
+![wordcloud](https://cloud.githubusercontent.com/assets/6283030/11045997/49742230-86f0-11e5-8d00-51c8dc9fcc09.png)
