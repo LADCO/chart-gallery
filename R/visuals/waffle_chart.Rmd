@@ -36,7 +36,7 @@ waffle(minne_aqi,
 ``` 
 
 
-![wide waffle](images/waffle_wide.svg)
+![wide waffle](https://github.com/LADCO/chart-gallery/edit/master/R/visuals/images/waffle_wide.svg)
 
 ## Use `flip=TRUE` to make a vertical waffle
 ```{r}
