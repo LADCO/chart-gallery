@@ -6,7 +6,7 @@ output: html_document
 ---
   
 
-The waffle chart below display the future distribution of AQI days for Minneapolis, MN.
+The waffle chart below gives a birds-eye view of AQI days for Minneapolis, MN.
 
 ## Load packages
 ```{r, message=F}
@@ -36,7 +36,7 @@ waffle(minne_aqi,
 ``` 
 
 
-![wide waffle](images/waffle_wide.svg)
+![wide waffle](images/waffle_wide.png)
 
 ## Use `flip=TRUE` to make a vertical waffle
 ```{r}
@@ -49,7 +49,7 @@ waffle(minne_aqi,
        flip=T)
 ```
 
-![tall waffle](images/waffle_tall.svg)
+![tall waffle](images/waffle_tall.png)
 
 ## To melt multiple waffles together use the `iron` function
 
@@ -80,6 +80,6 @@ aqi_2025 <- waffle(minne_aqi_2025,
 iron(aqi_2020, aqi_2025)
 ````` 
 
-![stacked waffle](images/waffle_stack.svg)
+![stacked waffle](images/waffle_stack.png)
 
 
