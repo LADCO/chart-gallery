@@ -26,7 +26,7 @@ Wordcloud of PAHs weighted by detection frequency
 
 
 Waffle chart used to show a year of AQI days
-[![stacked waffle](images/waffles_stack.png "Click to view R script")](https://github.com/LADCO/chart-gallery/blob/master/R/visuals/waffle_chart.Rmd) 
+[![stacked waffle](R/visuals/images/waffles_stack.png "Click to view R script")](https://github.com/LADCO/chart-gallery/blob/master/R/visuals/waffle_chart.Rmd) 
 
 
 
