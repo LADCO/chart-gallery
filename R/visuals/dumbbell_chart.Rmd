@@ -120,7 +120,7 @@ ggplot(aqi_data) +
 ```
 
 ### __Change in AQI alert days: 2010 to 2014__
-![legend](images/dumbbell_chart.png)
+![dumbbell_of_aqi](images/dumbbell_chart.png)
 
 <br/>
 <br/>
