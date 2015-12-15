@@ -6,12 +6,13 @@ output: html_document
 ---
   
 
-The waffle chart below gives a birds-eye view of a year's worth of AQI days for Minneapolis, MN.
+The waffle chart below display the future distribution of AQI days for Minneapolis, MN.
 
 ## Load packages
 ```{r, message=F}
 #devtools::install_github("hrbrmstr/waffle")
 library(waffle)
+
 ```
 
 ## Create example AQI data
@@ -35,8 +36,8 @@ waffle(minne_aqi,
        title="AQI days for Minneapolis, MN\n2020")
 ``` 
 
-![wide waffle](images/waffles_wide.png)
 
+![wide waffle](images/waffle_wide.png)
 
 ## Use `flip=TRUE` to make a vertical waffle
 ```{r}
@@ -49,7 +50,7 @@ waffle(minne_aqi,
        flip=T)
 ```
 
-![tall waffle](images/waffles_tall.png)
+![tall waffle](images/waffle_tall.png)
 
 ## To melt multiple waffles together use the `iron` function
 
@@ -80,6 +81,30 @@ aqi_2025 <- waffle(minne_aqi_2025,
 iron(aqi_2020, aqi_2025)
 ````` 
 
-![stacked waffle](images/waffles_stack.png)
+![stacked waffle](images/stack_waffles.png)
 
+
+## An emissions inventory example
+
+```{r, tidy=T}
+
+ei_pm25 <-  c(`  Onroad Mobile   ` = 85, 
+              `  Nonroad Mobile   `  = 92, 
+              `  Facilities / Point    ` = 77, 
+              `  Area   ` = 44)
+
+  
+# For year 2020
+ei_waffle <- waffle(ei_pm25, 
+       rows=7, 
+       size=0.6, 
+       xlab="\n",
+       title="Source of Minnesota PM2.5 Emissions\n\n2020")
+
+ei_waffle + guides(fill = guide_legend(position="top", override.aes = list(colour = NULL), label.theme = element_text(size = 16, angle=0))) + 
+  theme(legend.position="top")
+
+````` 
+
+![stacked waffle](images/waffle_emissions.png)
 

@@ -1,5 +1,5 @@
 # LADCO Chart Gallery
-Click on an image to view the R script and data used to produce it.  
+Click on an image to view the R script and data that produced it.  
 
 ### Table of Contents  
 [Maps](#maps)  
@@ -21,19 +21,18 @@ PAH concentrations w/ color legend (Leaflet)
 ## Visuals <a name="visuals"/>
 ___  
 
+Waffle chart showing 365 AQI days
+[![stacked waffle](R/visuals/images/waffles_stack.png "Click to view R script")](https://github.com/LADCO/chart-gallery/blob/master/R/visuals/waffle_chart.Rmd) 
+
+DumbBell chart of changes in # of elevated AQI days
+[![dumbbell chart](R/visuals/images/dumbbell_chart.png "Click to view R script")](https://github.com/LADCO/chart-gallery/blob/master/R/visuals/dumbbell_chart.Rmd)  
+
 Wordcloud of PAHs weighted by detection frequency
 [![wordcloud](https://cloud.githubusercontent.com/assets/6283030/11045997/49742230-86f0-11e5-8d00-51c8dc9fcc09.png "Click to view R script")](https://github.com/LADCO/chart-gallery/blob/master/R/visuals/wordcloud.Rmd)  
 
 
-Waffle chart used to show a year of AQI days
-[![stacked waffle](R/visuals/images/waffles_stack.png "Click to view R script")](https://github.com/LADCO/chart-gallery/blob/master/R/visuals/waffle_chart.Rmd) 
-
-
-
 ## Boxplots <a name="boxplots"/>
 ___  
-
-_currently empty_
 
 ## Time Series <a name="timeseries"/>
 ___  

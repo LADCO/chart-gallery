@@ -1,6 +1,6 @@
 ---
 title: 'PAHs in Minnesota Air: Rural and Urban Environments'
-author: "Kristie"
+author: "Kristie (MPCA)"
 date: "October 1, 2015"
 output: html_document
 ---

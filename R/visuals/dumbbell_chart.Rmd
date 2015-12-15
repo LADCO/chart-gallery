@@ -1,0 +1,128 @@
+---
+title: "DumbBell Chart"
+author: "Dorian (MPCA)"
+date: "December 7, 2015"
+output: html_document
+---
+
+This dumbbell chart displays the hypothetical change in AQI alert days between 2010 and 2014.
+
+## Load packages
+```{r, message=F}
+library(dplyr)
+library(ggplot2)
+```
+
+## Create example AQI data
+```{r}
+
+set.seed(27)
+aqi_data <- data.frame(Site_id     = rep(1:7, times=2),
+                       Year        = rep(c(2010,2014), each=7),
+                       Alert_Days  = c(0,5,6,1,0,18,7,
+                                       0,1,1,0,0,1, 3),
+                       #Alert_Days  = c(rnorm(7, 11, 2.6), rnorm(7, 15, 2.6)),
+                       stringsAsFactors = FALSE)
+
+sites <- read.csv(text = "Site_id, Site_name
+1,Ely
+2,St. Cloud
+3,Rochester
+4,Brainerd
+5,Duluth
+6,Twin Cities
+7,Marshall", 
+stringsAsFactors = FALSE)
+
+n_sites <- nrow(sites)
+```
+
+
+## Arrange sites and join tables
+```{r}
+aqi_data <- arrange(aqi_data, Site_id, Year)
+  
+aqi_data <- left_join(aqi_data, sites)
+
+```
+
+## Add row for state average 
+```{r}
+Mn_average <- group_by(aqi_data, Year) %>% summarize(Alert_Days = mean(Alert_Days, na.rm=T) )
+
+Mn_average <- mutate(Mn_average, Site_name = "State Average", Site_id = NA)
+
+aqi_data <- rbind(aqi_data, Mn_average)
+```
+
+
+## Assign colors and arrange data by 2010 maximum
+```{r}
+# Give a unique color to each year 
+aqi_data <- arrange(aqi_data, Site_name, -Year) %>%
+            mutate(color=rep(rev(c("#0e668b", "#a3c4dc")), 8), line_col="#a3c4dc")
+
+# Set the State average to red
+aqi_data[aqi_data$Site_name == "State Average", ]$color    <- rev(c("#bc1f31", "#e5b9a5"))
+aqi_data[aqi_data$Site_name == "State Average", ]$line_col <- "#e5b9a5"
+
+ordered_sites <- filter(aqi_data, Year == 2010) %>% 
+                 arrange(Alert_Days) %>% 
+                 select(Site_name)
+
+aqi_data$Site_name <- factor(aqi_data$Site_name, levels = ordered_sites[ , 1])
+
+```
+
+
+## Draw dumbbell chart
+```{r, echo=F, eval=F}
+# Create year legend
+ggplot(filter(aqi_data, Site_name %in% "Marshall")) + 
+       geom_path(aes(x=Alert_Days, y=Site_name, group=Site_name, color=line_col), size=4) +
+       geom_point(aes(x=Alert_Days, y=Site_name, color=color), size=6.2) +
+       scale_color_identity() +
+       scale_y_discrete(labels="") +
+       scale_x_continuous(breaks=c(3, 7), 
+                          labels=c("2014", "2010"), 
+                          limits=c(3,8)) +
+       labs(x=NULL, y=NULL) +
+       theme_bw() +
+       theme(plot.background=element_rect(fill="#f7f7f7"),
+             panel.background=element_blank(),
+             panel.grid.minor=element_blank(),
+             panel.grid.major.y=element_blank(),
+             panel.grid.major.x=element_blank(),
+             axis.ticks=element_blank(),
+             panel.border=element_blank(),
+             axis.text.x=element_text(size=22, vjust=1))
+```
+
+```{r, eval=F}
+# Create dumbbell chart
+ggplot(aqi_data) + 
+       geom_path(aes(x=Alert_Days, y=Site_name, group=Site_name, color=line_col), size=4) +
+       geom_point(aes(x=Alert_Days, y=Site_name, color=color), size=7.5) +
+       geom_text(data=NULL, x=1, y=nrow(aqi_data)/2 + .38, label=as.character(aqi_data[1, "Year"]), size=7) +
+       geom_text(data=NULL, x=18, y=nrow(aqi_data)/2 + .38, label=as.character(aqi_data[2, "Year"]), size=7) +
+       scale_color_identity() +
+       labs(x=NULL, y=NULL) +
+       theme_bw() +
+       theme(plot.background=element_rect(fill="#f7f7f7"),
+             panel.background=element_rect(fill="#f7f7f7"),
+             panel.grid.minor=element_blank(),
+             panel.grid.major.y=element_blank(),
+             panel.grid.major.x=element_line(),
+             axis.ticks=element_blank(),
+             panel.border=element_blank(),
+             axis.text=element_text(size=22))
+
+```
+
+### __Change in AQI alert days: 2010 to 2014__
+![legend](images/dumbbell_chart.png)
+
+<br/>
+<br/>
+Original code from Bob Rudis on [Github](https://gist.github.com/hrbrmstr/0d206070cea01bcb0118).
+
