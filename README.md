@@ -21,10 +21,10 @@ PAH concentrations w/ color legend (Leaflet)
 ## Visuals <a name="visuals"/>
 ___  
 
-Waffle chart showing 365 AQI days
+Waffle chart: birds eye view of a year's worth of AQI
 [![stacked waffle](R/visuals/images/waffles_stack.png "Click to view R script")](https://github.com/LADCO/chart-gallery/blob/master/R/visuals/waffle_chart.Rmd) 
 
-DumbBell chart of changes in # of elevated AQI days
+DumbBell chart of changes in number of AQI alert days
 [![dumbbell chart](R/visuals/images/dumbbell_chart.png "Click to view R script")](https://github.com/LADCO/chart-gallery/blob/master/R/visuals/dumbbell_chart.Rmd)  
 
 Wordcloud of PAHs weighted by detection frequency

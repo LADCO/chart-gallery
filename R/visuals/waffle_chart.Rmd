@@ -20,7 +20,7 @@ library(waffle)
 
 minne_aqi <- c(`Good` = 180, 
                `Moderate`  = 110, 
-               `Unhealthy for Sensitive Groups` = 59, 
+               `Unhealthy for sensitive groups` = 59, 
                `Unhealthy` = 16)
 
 aqi_colors <- c("#65B345", "#F2BE1A", "#F26522", "#B11117")
@@ -61,13 +61,14 @@ aqi_2020 <- waffle(minne_aqi,
        size=0.6, 
        colors=aqi_colors,
        xlab="\n",
-       title="AQI days for Minneapolis, MN\n\n2020")
+       title="AQI days for Minneapolis, MN\n\n2020") + 
+  theme(legend.position="left", legend.text=element_text(size=11))
 
 # For year 2025
 ## Create data
 minne_aqi_2025 <- c(`Good` = 240, 
                     `Moderate`  = 92, 
-                    `Unhealthy for Sensitive Groups` = 29, 
+                    `Unhealthy for sensitive groups` = 29, 
                     `Unhealthy` = 4)
 
 aqi_2025 <- waffle(minne_aqi_2025, 
@@ -75,13 +76,14 @@ aqi_2025 <- waffle(minne_aqi_2025,
        size=0.6, 
        colors=aqi_colors,
        xlab="1 square = 1 day",
-       title="2025")
+       title="2025") + 
+  theme(legend.position="left", legend.text=element_text(size=11))
 
 # Stack 2020 and 2025  waffles
 iron(aqi_2020, aqi_2025)
 ````` 
 
-![stacked waffle](images/stack_waffles.png)
+![stacked waffle](images/waffles_stack.png)
 
 
 ## An emissions inventory example
