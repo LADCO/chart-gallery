@@ -31,7 +31,7 @@ ggplot(mn_map, aes(long, lat, group=group))  +
        geom_polygon(fill="steelblue", color="white")
 
 ```
-![MN Counties](maps/images/minnesota.png)
+![MN Counties](images/minnesota.png)
 
 
 ## Create a static LADCO map
@@ -49,7 +49,7 @@ names(LADCO)[5:6] <- c("state.name", "county.name")
 ggplot(LADCO, aes(long, lat, group=group))  +
        geom_polygon(fill="steelblue", color="white")
 ```
-![MN Counties](maps/images/LADCO_simple.png)
+![MN Counties](images/LADCO_simple.png)
 
 
 ## Grab 2012 county populations from `choroplethr` package
@@ -116,7 +116,7 @@ map <- leaflet(counties) %>%
 
 map
 ```
-![LADCO States](maps/images/LADCO_pops.png)
+![LADCO States](images/LADCO_pops.png)
 
 
 ## Add LADCO headquarters
@@ -144,7 +144,7 @@ map %>% addPopups(data=LADCO_HQ,
                  popup="<a href='http://www.LADCO.org'>LADCO Control Center</a>",
                  options=popupOptions(closeButton=F))
 ```
-![LADCO as Capitol](maps/images/LADCO_capitol.png)
+![LADCO as Capitol](images/LADCO_capitol.png)
 
 ## References  
-[R-Studio leaflet package](https://rstudio.github.io/leaflet/)
+[R-Studio's leaflet tutorial: https://rstudio.github.io/leaflet](https://rstudio.github.io/leaflet/)
