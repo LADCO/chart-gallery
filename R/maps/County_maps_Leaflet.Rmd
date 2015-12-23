@@ -1,0 +1,150 @@
+---
+title: "County Map"
+author: "Dorian K"
+date: "December 21, 2015"
+output: html_document
+---
+
+#Quick and easy __County__ maps. 
+
+## Load packages
+```{r}
+# Load
+library(ggplot2)
+library(dplyr)
+#install.packages('tigris')
+library(tigris)
+#install.packages("leaflet")
+library(leaflet)
+library(choroplethr)
+```
+
+## Plot simple static county map with ggplot
+```{r}
+
+# load county data and filter to Minnesota
+mn_map <- map_data("county") %>%
+          filter(region == "minnesota")
+
+# plot 
+ggplot(mn_map, aes(long, lat, group=group))  +
+       geom_polygon(fill="steelblue", color="white")
+
+```
+![MN Counties](R/maps/images/minnesota.png)
+
+
+## Create a static LADCO map
+```{r}
+
+ladco_members <- c("minnesota","wisconsin","illinois","michigan","indiana","ohio") 
+
+# Load county file for LADCO states
+LADCO <- map_data("county") %>%
+         filter(region %in% ladco_members)
+
+names(LADCO)[5:6] <- c("state.name", "county.name")
+
+# plot 
+ggplot(LADCO, aes(long, lat, group=group))  +
+       geom_polygon(fill="steelblue", color="white")
+```
+![MN Counties](R/maps/images/LADCO_simple.png)
+
+
+## Grab 2012 county populations from `choroplethr` package
+```{r}
+# Data from `choroplethr` package
+data(df_pop_county)
+
+# Filter to LADCO states
+LADCO_fips <- c(27,26,17,18,39,55)
+df_pop_county <- subset(df_pop_county, substring(region, 1, 2) %in% LADCO_fips)
+
+# Name population column
+names(df_pop_county) <- c("GEOID", "Population")
+```
+
+## Load county shapefile using `tigris` package
+```{r}
+# Load county shapefile with `tigris` package
+counties <- counties(state=c("MN","WI","IL","IN","OH","MI"), cb=T, resolution='20m')
+
+# Filter to LADCO states
+counties <- subset(counties, substring(GEOID, 1, 2) %in% LADCO_fips)
+
+# Add population data
+counties <- geo_join(counties, df_pop_county, "GEOID", "GEOID")
+```
+
+
+## Set legend parameters
+```{r}
+# define hex colors for legend
+legend_colors <- c("#ffffcc", "#c7e9b4", "#7fcdbb", 
+                   "#41b6c4", "#2c7fb8", "#253494") 
+
+# define population breaks for legend
+counties$Pop_bins <- cut(counties$Population, 
+                         breaks=c(0, 5000, 10000, 25000, 50000, 250000, 10000000), 
+                         labels=legend_colors,
+                         include.lowest=T)
+ 
+# Use a colorBin function (optional)            
+#Pop_bins <- colorBin(legend_colors, counties$Population, c(0, 5000, 10000, 25000, 50000, 250000, 10000000), pretty = FALSE)
+  
+```
+
+## Plot using `leaflet`
+```{r}
+# Create map and assign popup options
+map <- leaflet(counties) %>% 
+       addProviderTiles("CartoDB.Positron") %>% 
+       addPolygons(stroke=T,
+                   color=~Pop_bins,
+                   weight=1.2,
+                   smoothFactor=0.3,
+                   fillOpacity=.75,
+                   fillColor= ~Pop_bins,
+                   popup=paste0("<b>", counties$NAME, "</b><br> 
+                                Population: ", counties$Population)) %>%
+       addLegend("topleft",
+                 colors  = legend_colors,
+                 labels  = c("0-5K","5K-10K","10K-25K","25K-50K","50K-250K","250K-10M"),
+                 title   = "Population (2012)",
+                 opacity = 1)
+
+map
+```
+![LADCO States](R/maps/images/LADCO_pops.png)
+
+
+## Add LADCO headquarters
+```{r}
+
+# Create table for LADCO coordinates
+# Coords: 41.995410, -87.864063
+LADCO_HQ <- read.csv(textConnection("
+lat,long
+41.995410,-87.864063
+41.995410,-87.864063"))
+
+# Add LADCO headquarters to previous plot as marker
+map %>% addMarkers(data=LADCO_HQ, 
+                   popup = "LADCO Headquarters")
+
+# Add orange awesome marker
+map %>% addAwesomeMarkers(data=LADCO_HQ, 
+                   popup = "LADCO Headquarters",
+                   icon=makeAwesomeIcon(icon="star", markerColor="orange"))
+
+# Add LADCO headquarters to previous plot as info box 
+# with link to LADCO website
+map %>% addPopups(data=LADCO_HQ,
+                 popup="<a href='http://www.LADCO.org'>LADCO Control Center</a>",
+                 options=popupOptions(closeButton=F))
+```
+![LADCO as Capitol](R/maps/images/LADCO_capitol.png)
+
+## References  
+[R-Studio leaflet package](https://rstudio.github.io/leaflet/)
