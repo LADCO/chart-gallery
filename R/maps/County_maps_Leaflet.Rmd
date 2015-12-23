@@ -1,25 +1,25 @@
 ---
-title: "County Map"
+title: "County Maps"
 author: "Dorian K"
 date: "December 21, 2015"
 output: html_document
 ---
 
-#Quick and easy __County__ maps
+# Quick and easy __county__ maps
 
 ## Load packages
 ```{r}
 # Load
-library(ggplot2)
-library(dplyr)
+library('ggplot2')
+library('dplyr')
 #install.packages('tigris')
-library(tigris)
+library('tigris')
 #install.packages('leaflet')
-library(leaflet)
-library(choroplethr)
+library('leaflet')
+library('choroplethr')
 ```
 
-## Plot simple static county map with ggplot
+## Plot a simple county map with ggplot
 ```{r}
 
 # load county data and filter to Minnesota
@@ -52,9 +52,9 @@ ggplot(LADCO, aes(long, lat, group=group))  +
 ![MN Counties](images/LADCO_simple.png)
 
 
-## Grab 2012 county populations from `choroplethr` package
+## Get county populations from `choroplethr`
 ```{r}
-# Data from `choroplethr` package
+# 2012 data from `choroplethr` package
 data(df_pop_county)
 
 # Filter to LADCO states
@@ -114,6 +114,7 @@ map <- leaflet(counties) %>%
                  title   = "Population (2012)",
                  opacity = 1)
 
+# Open map
 map
 ```
 ![LADCO States](images/LADCO_pops.png)
@@ -126,7 +127,6 @@ map
 # Coords: 41.995410, -87.864063
 LADCO_HQ <- read.csv(textConnection("
 lat,long
-41.995410,-87.864063
 41.995410,-87.864063"))
 
 # Add LADCO headquarters to previous plot as marker
@@ -146,5 +146,6 @@ map %>% addPopups(data=LADCO_HQ,
 ```
 ![LADCO as Capitol](images/LADCO_capitol.png)
 
+<br><br>
 ## References  
 [R-Studio's leaflet tutorial: https://rstudio.github.io/leaflet](https://rstudio.github.io/leaflet/)
