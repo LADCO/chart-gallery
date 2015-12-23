@@ -9,7 +9,6 @@ output: html_document
 
 ## Load packages
 ```{r}
-# Load
 library('ggplot2')
 library('dplyr')
 #install.packages('tigris')
