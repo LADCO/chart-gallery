@@ -1,4 +1,4 @@
-# LADCO Chart Gallery
+# Chart Gallery
 Click on an image to view the R script and data that produced it.  
 
 ### Table of Contents  
