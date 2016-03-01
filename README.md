@@ -35,7 +35,10 @@ Wordcloud of PAHs weighted by detection frequency
 
 
 ## Boxplots <a name="boxplots"/>
-___  
+___ 
+
+Boxplot / Scatterplot combination as distribution summary
+[![boxplot jitters](R/boxplots/images/boxplot_jitters_MDL.png "Click to view R script")](https://github.com/LADCO/chart-gallery/blob/master/R/boxplots/boxplot_jitters.Rmd) 
 
 ## Time Series <a name="timeseries"/>
 ___  
