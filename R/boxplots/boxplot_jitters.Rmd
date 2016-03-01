@@ -68,4 +68,4 @@ ggplot(data= sample_data, aes(x= factor(Site, levels=c("Minneapolis","St. Paul",
 ![boxplot jitters w/ MDL](images/boxplot_jitters_MDL.png)
 
 
-[Return to main page.](../../README.md)
+[> Return to main page](../../README.md)
