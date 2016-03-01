@@ -37,7 +37,7 @@ ___
 ## Boxplots <a name="boxplots"/>
 ___ 
 
-#### Distribution summary with boxplot / scatterplot, added detection limit
+#### Distribution summary with boxplot / scatterplot and added detection limit (MDL)
 [![boxplot jitters](R/boxplots/images/boxplot_jitters_MDL.png "Click to view R script")](https://github.com/LADCO/chart-gallery/blob/master/R/boxplots/boxplot_jitters.Rmd) 
 
 ## Time Series <a name="timeseries"/>
